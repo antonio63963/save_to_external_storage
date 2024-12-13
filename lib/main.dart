@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:camera/media.service.dart';
+import 'package:camera/screens/storage_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:image_picker/image_picker.dart';
@@ -40,15 +41,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   File? _takedImage;
   String? savedImagePath;
-  TargetPlatform? platform;
 
   @override
   void initState() {
-    if (Platform.isAndroid) {
-      platform = TargetPlatform.android;
-    } else {
-      platform = TargetPlatform.iOS;
-    }
     super.initState();
   }
 
@@ -65,7 +60,8 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             IconButton(
               onPressed: () async {
-                final file = await MediaService().takePictureAndSaveToExternalStore('ID:1232');
+                final file = await MediaService()
+                    .takePictureAndSaveToExternalStore('ID:1232');
                 setState(() => _takedImage = file != null ? File(file) : null);
               },
               icon: const Icon(Icons.camera),
@@ -84,9 +80,25 @@ class _MyHomePageState extends State<MyHomePage> {
                           fit: BoxFit.contain,
                         ),
                 ),
+                IconButton(
+                  onPressed: () {
+                    picker.pickMultiImage().then((resp) {});
+                  },
+                  icon: Icon(
+                    Icons.picture_in_picture_rounded,
+                  ),
+                ),
               ],
             ),
-            Text(savedImagePath ?? 'NULL')
+            IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const StorageScreen()),
+                  );
+                },
+                icon: Icon(Icons.storage))
           ],
         ),
       ),

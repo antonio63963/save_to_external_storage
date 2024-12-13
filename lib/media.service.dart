@@ -72,7 +72,7 @@ class MediaService {
     return null;
   }
 
-  Future<String?> getStorage() async {
+   Future<String?> getStorage() async {
     if (platform == TargetPlatform.android) {
       // return "/sdcard/download/";
       final localPath = await ExternalPath.getExternalStoragePublicDirectory(
